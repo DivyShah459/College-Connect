@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Colleges</title>
+   <h1>College Database</h1>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+<body>
+<form action="mycolleges">
+   <div class="btn">
+       <div class="inner"></div>
+       <button type="submit">View My Colleges</button>
+   </div>
+</form>
+
+
+<h3>Sort By: </h3>
+<div class = "button-container">
+   <div class = "btn">
+   <a href="order_by_act"><input type="button" value="ACT Score"></a>
+   <a href="order_by_sat"><input type="button" value="SAT Score"></a>
+   <a href="order_by_class_size"><input type="button" value="Class Size"></a>
+   <a href="order_by_acceptance_rate"><input type="button" value="Acceptance Rate"></a>
+   <a href="order_by_cost"><input type="button" value="Cost"></a>
+   <a href="order_by_rank"><input type="button" value="Rank"></a>
+   <a href="order_by_gpa"><input type="button" value="High School GPA"></a>
+   </div>
+</div>
+<br>
+<div class = 'parent'>
+    <h3>Filter By: </h3>
+   <div class = 'child'>
+
+<h5>Cost</h5>
+   <label for="minValue">Min Value:</label>
+   <input type="range" id="minValue" name="minValue" min="0" max="100000" value="20000" step="5000" list="tickmarks">
+
+<br>
+
+   <label for="maxValue">Max Value:</label>
+   <input type="range" id="maxValue" name="maxValue" min="0" max="100000" value="26000" step="5000" list="tickmarks">
+
+
+   <datalist id="tickmarks">
+       <option value="0">
+       <option value="5000">
+       <option value="10000">
+       <option value="15000">
+       <option value="20000">
+       <option value="25000">
+       <option value="30000">
+       <option value="35000">
+       <option value="40000">
+       <option value="45000">
+       <option value="50000">
+       <option value="55000">
+       <option value="60000">
+       <option value="65000">
+       <option value="70000">
+       <option value="75000">
+       <option value="80000">
+       <option value="85000">
+       <option value="90000">
+       <option value="95000">
+       <option value="100000">
+   </datalist>
+
+
+   <p>Selected Range: <span id="selectedRangeMin">20,000</span> - <span id="selectedRangeMax">25,000</span></p>
+
+
+   <button id="saveButton">Save Values</button>
+   </div>
+    <div class = "child">
+        <h5>Institutional Control</h5>
+        <a href="check_pub"><input type="button" value="Public"></a>
+        <a href="check_priv"><input type="button" value="Private"></a>
+        <a href="check_prop"><input type="button" value="Proprietary"></a>
+    </div>
+    <div class="child">
+    <h5>Region</h5>
+    <button id="westButton">West</button>
+    <button id="southwestButton">Southwest</button>
+    <button id="midwestButton">Midwest</button>
+    <button id="southeastButton">Southeast</button>
+    <button id="northeastButton">Northeast</button>
+    </div>
+    <div class = "child">
+        <h5>Size</h5>
+            <label for="minEnrollment">Min Enrollment:</label>
+    <input type="range" id="minEnrollment" name="minEnrollment" min="0" max="100000" value="20000" step="5000" list="enrollmentTickmarks">
+    <br>
+    <label for="maxEnrollment">Max Enrollment:</label>
+    <input type="range" id="maxEnrollment" name="maxEnrollment" min="0" max="100000" value="26000" step="5000" list="enrollmentTickmarks">
+
+    <datalist id="enrollmentTickmarks">
+        <option value="0">
+        <option value="5000">
+        <option value="10000">
+        <option value="15000">
+        <option value="20000">
+        <option value="25000">
+        <option value="30000">
+        <option value="35000">
+        <option value="40000">
+        <option value="45000">
+        <option value="50000">
+        <option value="55000">
+        <option value="60000">
+        <option value="65000">
+        <option value="70000">
+        <option value="75000">
+        <option value="80000">
+        <option value="85000">
+        <option value="90000">
+        <option value="95000">
+        <option value="100000">
+    </datalist>
+
+    <p>Selected Range: <span id="selectedRangeMinEnrollment">20,000</span> - <span id="selectedRangeMaxEnrollment">25,000</span></p>
+
+    <button id="saveEnrollmentButton">Save Enrollment Values</button>
+    </div>
+</div>
+
+<script>
+    // Function to send AJAX request to add data to MyColleges
+    function addToMyColleges(collegeName, state, actAvg, satAvg, classSize, acceptanceRate, cost, percentReceivingAid, nationalRank, hsGPA, institutionalControl) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/add_to_mycolleges', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    alert(response.message); // You can customize the alert/message as needed
+                } else {
+                    alert("Error: " + JSON.parse(xhr.responseText).error);
+                }
+            }
+        };
+
+        xhr.send(JSON.stringify({
+            collegeName: collegeName,
+            state: state,
+            actAvg: actAvg,
+            satAvg: satAvg,
+            classSize: classSize,
+            acceptanceRate: acceptanceRate,
+            cost: cost,
+            percentReceivingAid: percentReceivingAid,
+            nationalRank: nationalRank,
+            hsGPA: hsGPA,
+            institutionalControl: institutionalControl
+        }));
+    }
+</script>
+
+
+<script>
+    const minValue = document.getElementById('minValue');
+    const maxValue = document.getElementById('maxValue');
+    const selectedRangeMin = document.getElementById('selectedRangeMin');
+    const selectedRangeMax = document.getElementById('selectedRangeMax');
+    const saveButton = document.getElementById('saveButton');
+
+    saveButton.addEventListener('click', saveValues);
+
+    function updateRange() {
+        selectedRangeMin.textContent = minValue.value;
+        selectedRangeMax.textContent = maxValue.value;
+    }
+
+    function saveValues() {
+        const minSelectedValue = minValue.value;
+        const maxSelectedValue = maxValue.value;
+
+        if (parseInt(minSelectedValue) > parseInt(maxSelectedValue)) {
+            alert("Error: Minimum value should not be greater than the maximum value.");
+            return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/save_values', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    updateTable(response.data);
+                } else {
+                    alert("Error: " + JSON.parse(xhr.responseText).error);
+                }
+            }
+        };
+
+        xhr.send(JSON.stringify({ min: minSelectedValue, max: maxSelectedValue }));
+    }
+
+    function updateTable(data) {
+        const tableBody = document.querySelector('tbody');
+        tableBody.innerHTML = '';
+
+        data.forEach(row => {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${row[0]}</td>
+                <td>${row[1]}</td>
+                <td>${row[2]}</td>
+                <td>${row[3]}</td>
+                <td>${row[4]}</td>
+                <td>${row[5]}</td>
+                <td>${row[6]}</td>
+                <td>${row[7]}</td>
+                <td>${row[8]}</td>
+                <td>${row[9]}</td>
+                <td>${row[10]}</td>
+            `;
+            tableBody.appendChild(newRow);
+        });
+    }
+
+    minValue.addEventListener('input', updateRange);
+    maxValue.addEventListener('input', updateRange);
+</script>
+
+
+
+<script>
+    const minEnrollment = document.getElementById('minEnrollment');
+    const maxEnrollment = document.getElementById('maxEnrollment');
+    const selectedRangeMinEnrollment = document.getElementById('selectedRangeMinEnrollment');
+    const selectedRangeMaxEnrollment = document.getElementById('selectedRangeMaxEnrollment');
+    const saveEnrollmentButton = document.getElementById('saveEnrollmentButton');
+
+    saveEnrollmentButton.addEventListener('click', saveEnrollmentValues);
+    minEnrollment.addEventListener('input', updateEnrollmentRange);
+    maxEnrollment.addEventListener('input', updateEnrollmentRange);
+
+    function updateEnrollmentRange() {
+        selectedRangeMinEnrollment.textContent = minEnrollment.value;
+        selectedRangeMaxEnrollment.textContent = maxEnrollment.value;
+    }
+
+    function saveEnrollmentValues() {
+        const minSelectedEnrollment = minEnrollment.value;
+        const maxSelectedEnrollment = maxEnrollment.value;
+
+        if (parseInt(minSelectedEnrollment) > parseInt(maxSelectedEnrollment)) {
+            alert("Error: Minimum enrollment should not be greater than the maximum enrollment.");
+            return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/save_values_enrollment', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    updateTable(response.data);
+                } else {
+                    alert("Error: " + JSON.parse(xhr.responseText).error);
+                }
+            }
+        };
+
+        xhr.send(JSON.stringify({ min: minSelectedEnrollment, max: maxSelectedEnrollment }));
+    }
+</script>
+
+
+<script>
+    const westButton = document.getElementById('westButton');
+    const southwestButton = document.getElementById('southwestButton');
+    const midwestButton = document.getElementById('midwestButton');
+    const southeastButton = document.getElementById('southeastButton');
+    const northeastButton = document.getElementById('northeastButton');
+
+    westButton.addEventListener('click', () => filterByRegion(['CA', 'NV', 'AK', 'HI', 'OR', 'WA', 'UT', 'ID', 'CO', 'WY', 'MT']));
+    southwestButton.addEventListener('click', () => filterByRegion(['AZ', 'NM', 'OK', 'TX']));
+    midwestButton.addEventListener('click', () => filterByRegion(['ND', 'MN', 'SD', 'NE', 'KS', 'MO', 'IA', 'IL', 'WI', 'MI', 'IN', 'OH']));
+    southeastButton.addEventListener('click', () => filterByRegion(['AR', 'LA', 'MS', 'AL', 'GA', 'TN', 'KY', 'WV', 'VA', 'NC', 'SC', 'FL']));
+    northeastButton.addEventListener('click', () => filterByRegion(['PA', 'MD', 'DE', 'NJ', 'NY', 'CT', 'RI', 'MA', 'NH', 'VT', 'ME']));
+
+    function filterByRegion(states) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/filter_by_region', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    updateTable(response.data);
+                } else {
+                    alert("Error: " + JSON.parse(xhr.responseText).error);
+                }
+            }
+        };
+
+        xhr.send(JSON.stringify({ states: states }));
+    }
+</script>
+
+<br>
+<br>
+<table>
+
+
+ <thead>
+   <tr>
+       <th>College Name</th>
+       <th>State</th>
+       <th>Average ACT</th>
+       <th>Average SAT</th>
+       <th>Class Size</th>
+       <th>Acceptance Rate</th>
+       <th>Cost</th>
+       <th>Percentage Of Students Who Receive Aid</th>
+       <th>National Rank</th>
+       <th>High School GPA</th>
+       <th>Institutional Control</th>
+       <th>Action</th>
+   </tr>
+   </thead>
+   <tbody>
+    {% for row in data %}
+           <tr>
+               <td>{{row[0]}}</td>
+               <td>{{row[1]}}</td>
+               <td>{{row[2]}}</td>
+               <td>{{row[3]}}</td>
+               <td>{{row[4]}}</td>
+               <td>{{row[5]}}</td>
+               <td>{{row[6]}}</td>
+               <td>{{row[7]}}</td>
+               <td>{{row[8]}}</td>
+               <td>{{row[9]}}</td>
+               <td>{{row[10]}}</td>
+               <td><button onclick="addToMyColleges('{{row[0]}}', '{{row[1]}}', {{row[2]}}, {{row[3]}}, {{row[4]}}, {{row[5]}}, {{row[6]}}, {{row[7]}}, {{row[8]}}, {{row[9]}}, '{{row[10]}}')">Add to MyColleges</button></td>
+
+           </tr>
+       {% endfor %}
+
+
+   </tbody>
+
+
+</table>
+</body>
+</html>
+
+
+<style>
+   @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+*{
+ margin: 0;
+ padding: 0;
+ outline: none;
+ box-sizing: border-box;
+ font-family: 'Poppins', sans-serif;
+}
+td {
+       width: 150px;
+       text-align: center;
+       border: 1px solid black;
+       padding: 5px;
+     }
+
+
+body{
+ height: 100vh;
+ width: 100%;
+ background: lightblue
+}
+.show-btn{
+ background: #fff;
+ padding: 10px 20px;
+ font-size: 20px;
+ font-weight: 500;
+ color: #3498db;
+ cursor: pointer;
+ box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+.show-btn, .container{
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+}
+
+
+input[type="checkbox"]{
+ display: none;
+}
+.container{
+ display: none;
+ background: #fff;
+ width: 410px;
+ padding: 30px;
+ box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+#show:checked ~ .container{
+ display: block;
+}
+.container .close-btn{
+ position: absolute;
+ right: 20px;
+ top: 15px;
+ font-size: 18px;
+ cursor: pointer;
+}
+.container .close-btn:hover{
+ color: #3498db;
+}
+.button-container {
+ display: flex;
+}
+.container .text{
+ font-size: 35px;
+ font-weight: 600;
+ text-align: center;
+}
+.container form{
+ margin-top: -20px;
+}
+.container form .data{
+ height: 45px;
+ width: 100%;
+ margin: 40px 0;
+}
+form .data label{
+ font-size: 18px;
+}
+form .data input{
+ height: 100%;
+ width: 100%;
+ padding-left: 10px;
+ font-size: 17px;
+ border: 1px solid silver;
+}
+form .data input:focus{
+ border-color: #3498db;
+ border-bottom-width: 2px;
+}
+form .forgot-pass{
+ margin-top: -8px;
+}
+form .forgot-pass a{
+ color: #3498db;
+ text-decoration: none;
+}
+form .forgot-pass a:hover{
+ text-decoration: underline;
+}
+form .btn{
+ margin: 30px 0;
+ height: 45px;
+ width: 100%;
+ position: relative;
+ overflow: hidden;
+}
+form .btn .inner{
+ height: 100%;
+ width: 300%;
+ position: absolute;
+ left: -100%;
+ z-index: -1;
+ background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+ transition: all 0.4s;
+}
+.parent {
+  text-align: left;
+}
+.child {
+  display: inline-block;
+  border: 1px solid gray;
+  padding: 0.2rem 0.2rem;
+  vertical-align: text-top;
+}
+form .btn:hover .inner{
+ left: 0;
+}
+form .btn button{
+ height: 100%;
+ width: 100%;
+ background: none;
+ border: none;
+ color: #fff;
+ font-size: 18px;
+ font-weight: 500;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ cursor: pointer;
+}
+form .signup-link{
+ text-align: center;
+}
+form .signup-link a{
+ color: #3498db;
+ text-decoration: none;
+}
+form .signup-link a:hover{
+ text-decoration: underline;
+}
+</style>
