@@ -11,25 +11,23 @@
 <div id="login-container">
    <h1>College Connect</h1>
    <h3>Login</h3>
-   <label for="username">Username:</label>
-   <input type="text" id="username" name="username" required>
+   <form method="post" action="/login">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required><br>
 
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required><br>
 
-   <label for="password">Password:</label>
-   <div class="password-container">
-       <input type="password" id="password" name="password" required>
-       <button id="toggle-password" onclick="togglePasswordVisibility()">Show Password</button>
-
-   </div>
-
-
-   <button onclick="login()">Login</button>
+      <button type="submit" onclick="doLogin()">Login</button>
+  </form>
+  <a href="{{ url_for('signup') }}">
+   <button type="button">Sign Up</button></a>
    <p id="error-message"></p>
 </div>
 
 
 <script>
-   function login() {
+   /*function login() {
        var username = document.getElementById("username").value;
        var password = document.getElementById("password").value;
 
@@ -47,6 +45,15 @@
            document.getElementById("error-message").innerText = "Invalid username or password.";
        }
    }
+   */
+   function doLogin() {
+      document.getElementById('loginForm').action = "/login";
+    }
+
+    /*function doSubmit() {
+      document.getElementById('signupForm').action = "/signup";
+    }*/
+
    function togglePasswordVisibility() {
    var passwordInput = document.getElementById("password");
    var toggleButton = document.getElementById("toggle-password");
