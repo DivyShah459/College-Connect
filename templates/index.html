@@ -25,48 +25,10 @@
    <p id="error-message"></p>
 </div>
 
-
 <script>
-   /*function login() {
-       var username = document.getElementById("username").value;
-       var password = document.getElementById("password").value;
-
-
-       var validUsername = "bloomberg";
-       var validPassword = "2023";
-
-
-       if (username === validUsername && password === validPassword) {
-           alert("Login successful!");
-           window.location.href = "table";
-       } else {
-           document.getElementById("username").value = "";
-           document.getElementById("password").value = "";
-           document.getElementById("error-message").innerText = "Invalid username or password.";
-       }
-   }
-   */
    function doLogin() {
       document.getElementById('loginForm').action = "/login";
     }
-
-    /*function doSubmit() {
-      document.getElementById('signupForm').action = "/signup";
-    }*/
-
-   function togglePasswordVisibility() {
-   var passwordInput = document.getElementById("password");
-   var toggleButton = document.getElementById("toggle-password");
-
-
-   if (passwordInput.type === "password") {
-       passwordInput.type = "text";
-       toggleButton.innerText = "Hide Password";
-   } else {
-       passwordInput.type = "password";
-       toggleButton.innerText = "Show Password";
-   }
-}
 </script>
 
 
