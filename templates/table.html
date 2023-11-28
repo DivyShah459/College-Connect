@@ -312,6 +312,39 @@
 
    </tbody>
 
+<script>
+    // Function to send AJAX request to add data to MyColleges
+    function addToMyColleges(collegeName, state, actAvg, satAvg, classSize, acceptanceRate, cost, percentReceivingAid, nationalRank, hsGPA, institutionalControl) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/add_to_mycolleges', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    alert(response.message); // You can customize the alert/message as needed
+                } else {
+                    alert("Error: " + JSON.parse(xhr.responseText).error);
+                }
+            }
+        };
+
+        xhr.send(JSON.stringify({
+            collegeName: collegeName,
+            state: state,
+            actAvg: actAvg,
+            satAvg: satAvg,
+            classSize: classSize,
+            acceptanceRate: acceptanceRate,
+            cost: cost,
+            percentReceivingAid: percentReceivingAid,
+            nationalRank: nationalRank,
+            hsGPA: hsGPA,
+            institutionalControl: institutionalControl
+        }));
+    }
+</script>
 
 </table>
 </body>
