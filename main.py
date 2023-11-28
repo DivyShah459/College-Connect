@@ -33,8 +33,9 @@ def login():
 
         if result and result[0] == password:
             return redirect(url_for('table'))
+
         else:
-            return redirect(url_for('login'))
+            return render_template('index.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
