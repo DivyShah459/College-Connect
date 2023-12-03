@@ -1,8 +1,11 @@
 from flask import Flask, request, render_template, jsonify, redirect, url_for, flash
 
 import psycopg2
+import openai
+import time
 from requests_html import HTMLSession
 from requests_html import AsyncHTMLSession
+openai.api_key = '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'
 
 
 conn = psycopg2.connect("dbname=postgres user=postgres password=postgres")
@@ -17,9 +20,37 @@ db_config = {
    'database': 'colleges',
 }
 
+
+def get_completion(prompt):
+    print(prompt)
+    query = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+    time.sleep(15)
+    response = query.choices[0].text
+    return response
+
 @app.route('/')
 def test():
    return render_template('index.html')
+@app.route("/essayhelp", methods=['POST', 'GET'])
+def query_view():
+    if request.method == 'POST':
+        print('step1')
+        prompt = request.form['prompt']
+        response = get_completion(prompt)
+        print(response)
+
+        return jsonify({'response': response})
+    return render_template('essayhelp.html')
+
+
+
 
 
 @app.route('/login', methods=['POST'])
@@ -36,7 +67,6 @@ def login():
 
         else:
             return render_template('index.html')
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -282,6 +312,7 @@ def remove_college():
 
     finally:
         mycursor.close()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
