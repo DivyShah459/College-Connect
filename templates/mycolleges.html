@@ -6,6 +6,17 @@
 </head>
 <body>
     <h1>My Colleges</h1>
+    <a href="{{ url_for('welcome') }}">
+    <button class="profile-icon" onclick="openProfile()">
+        <img src="https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg" width="50"  height="50" alt="Profile Icon">
+    </button></a>
+
+    <form action="table">
+        <div class="btn">
+            <div class="inner"></div>
+            <button type="submit">Search for More Colleges</button>
+        </div>
+     </form>
 <table>
 
 
@@ -103,6 +114,13 @@ body{
  width: 100%;
  background: lightblue
 }
+h1 {
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
 .show-btn{
  background: #fff;
  padding: 10px 20px;
@@ -233,4 +251,13 @@ form .signup-link a{
 form .signup-link a:hover{
  text-decoration: underline;
 }
+
+.profile-icon {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
 </style>
