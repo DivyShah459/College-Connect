@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify, redirect, url_for, flash
+from flask import Flask, request, render_template, jsonify, redirect, url_for, flash, session
 
 import psycopg2
 import openai
@@ -7,11 +7,10 @@ from requests_html import HTMLSession
 from requests_html import AsyncHTMLSession
 openai.api_key = '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'
 
-
 conn = psycopg2.connect("dbname=postgres user=postgres password=postgres")
 mycursor = conn.cursor()
 app = Flask(__name__)
-
+app.config['SECRET_KEY'] = '8e3223904ac0df382b253f7f49ec73b7'
 
 db_config = {
    'host': 'localhost',
@@ -63,7 +62,12 @@ def login():
         result = mycursor.fetchone()
 
         if result and result[0] == password:
-            return redirect(url_for('table'))
+            mycursor.execute("SELECT name FROM users WHERE username = %s", (username,))
+            session['user_name'] = mycursor.fetchone()[0]
+            
+            mycursor.execute("SELECT COUNT(*) FROM MyColleges")
+            row_count = mycursor.fetchone()[0]
+            return render_template('welcome.html', user_name=session['user_name'], row_count=row_count)
 
         else:
             return render_template('index.html')
@@ -88,7 +92,19 @@ def signup():
 
     return render_template('signup.html')
 
+@app.route('/welcome')
+def welcome():
+    user_name = session.get('user_name')
 
+    if user_name:
+        mycursor.execute("SELECT COUNT(*) FROM MyColleges")
+        row_count = mycursor.fetchone()[0]
+        return render_template('welcome.html', user_name=user_name, row_count=row_count)
+    
+    else:
+        flash('Please log in first.', 'error')
+        return redirect(url_for('test'))
+    
 @app.route('/table')
 def table():
    mycursor.execute("SELECT * FROM Colleges")

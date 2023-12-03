@@ -10,15 +10,16 @@
 
 <div id="login-container">
    <h1>College Connect</h1>
-   <h3>Login</h3>
+   <h2>Login</h2>
    <form method="post" action="/login">
       <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required><br>
+      <input type="text" id="username" placeholder="Enter Username" name="username" required><br>
 
       <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required><br>
+      <input type="password" id="password" placeholder="Enter Password" name="password" required><br>
 
       <button type="submit" onclick="doLogin()">Login</button>
+      <br></br>
   </form>
   <a href="{{ url_for('signup') }}">
    <button type="button">Sign Up</button></a>
@@ -39,7 +40,7 @@
 <style>
 body {
    font-family: 'Poppins', sans-serif;
-   background: url('https://wallpapercave.com/wp/wp9432494.jpg') center fixed;
+   background: url('https://img.freepik.com/premium-photo/library-with-bookshelves-row-bookshelves-with-word-library-top_391229-152.jpg') center fixed;
    background-size: cover;
    margin: 0;
    display: flex;
@@ -55,26 +56,27 @@ body {
    padding: 40px;
    border-radius: 8px;
    width: 300px;
-   text-align: center;
 }
 
 
 h1 {
    color: #333;
    margin-bottom: 10px;
+   text-align: center;
 }
 
 
-h3 {
+h2 {
    color: #333;
-   margin-bottom: 30px;
+   margin-top: 30px;
+   margin-bottom: 20px;
+   text-align: center;
 }
 
 
 label {
    display: block;
-   margin-top: 15px;
-   color: #555;
+   margin-bottom: 8px;
 }
 
 
@@ -90,13 +92,13 @@ input {
 
 
 button {
-   background-color: lightblue;
-   color: white;
-   padding: 12px;
+   background-color: #4169E1;
+   color: #fff;
+   padding: 13px;
    border: none;
    border-radius: 4px;
    cursor: pointer;
-   transition: background-color 0.3s ease;
+   width: 100%;
 }
 
 
@@ -116,28 +118,6 @@ button:hover {
 }
 
 
-#password {
-   width: calc(100% - 32px);
-   padding: 12px;
-   margin-top: 8px;
-   margin-bottom: 20px;
-   box-sizing: border-box;
-   border: 1px solid #ccc;
-   border-radius: 4px;
-}
-
-
-#toggle-password {
-   position: absolute;
-   top: 50%;
-   right: 8px;
-   transform: translateY(-50%);
-   background: none;
-   border: none;
-   cursor: pointer;
-   color: #555;
-   font-size: 14px;
-}
 
 
 
